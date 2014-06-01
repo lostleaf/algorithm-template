@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1273756148 source:c:\users\fourleavedclover\documents\library\kshortpath\main.cpp
+	<iostream>
+	<cstring>
+	<limits>
+

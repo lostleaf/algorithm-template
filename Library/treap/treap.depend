@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1270476354 source:c:\users\fourleavedclover\desktop\library\treap\treap\main.cpp
+	<iostream>
+	<limits>
+
+1270477048 source:c:\users\fourleavedclover\desktop\library\treap\main.cpp
+	<iostream>
+	<limits>
+

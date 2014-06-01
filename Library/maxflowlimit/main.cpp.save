@@ -1,0 +1,136 @@
+#include <iostream>
+#include <cstring>
+#include <limits>
+#define maxint numeric_limits<int>::max()
+using namespace std;
+struct edge
+{
+    int x;
+    int c;
+    int next;
+};
+edge map[10000];
+int list[1000];
+int mat[1000], queue[1000], prev[1000];
+int fin[1000], fout[1000];
+int n, m;
+int source, target, nsource, ntarget;
+int review;
+int l, r;
+int tot;
+int maxflow;
+void insertedge(int x, int y, int c)
+{
+    tot++;
+    map[tot].x = y;
+    map[tot].y = x;
+    map[tot].c = c;
+    map[tot].next = list[x];
+    list[x] = tot;
+}
+bool findpath()
+{
+    memset(queue, 0, sizeof(queue));
+    l = 1;
+    r = 1;
+    queue[l] = nsource;
+    memset(mat, 0, sizeof(mat));
+    mat[0] = maxint;
+    mat[queue[l]] = 1;
+    review = 0;
+    while (l <= r)
+    {
+        int i = list[queue[l]];
+        while (i)
+        {
+            if ((!mat[map[i].x]) && map[i].c)
+            {
+                mat[map[i].x] = mat[queue[l]] + 1;
+                r++;
+                queue[r] = map[i].x;
+            }
+            i = map[i].next;
+        }
+        if (mat[ntarget])
+            return true;
+        l++;
+    }
+    return false;
+}
+void update()
+{
+    int i;
+    int max;
+    max = maxint;
+    i = ntarget;
+    while (i != nsource)
+    {
+        if (map[prev[i]].c < max)
+            max = map[prev[i]].c;
+        i = map[prev[i] ^ 1].x;
+    }
+    maxflow += max;
+    i = ntarget;
+    while (i != nsource)
+    {
+        map[prev[i]].c -= max;
+        map[prev[i] ^ 1].c += max;
+        if (!map[prev[i]].c)
+            review = map[prev[i] ^ 1].x;
+        i = map[prev[i] ^ 1].x;
+    }
+}
+void dicnic(int x)
+{
+    if (x == ntarget)
+    {
+        update();
+        return ;
+    }
+    int i = list[x];
+    while (i)
+    {
+        if ((map[i].c) && (mat[map[i].x] == mat[x] + 1))
+        {
+            prev[map[i].x] = i;
+            dicnic(map[i].x);
+            if (mat[x] > mat[review])
+                return;
+            review = 0;
+        }
+        i = map[i].next;
+    }
+    mat[x] = 0;
+}
+int main()
+{
+    cin >> n >> m;
+    cin >> source >> target;
+    tot = 1;
+    for (int i = 1; i <= m; i++)
+    {
+        int x, y, a, b;
+        cin >> x >> y >> a >> b;
+        fin[y] += a;
+        fout[x] += a;
+        insertedge(x, y, b - a, b);
+        insertedge(y, x, 0, b);
+    }
+    nsource = n + 1;
+    ntarget = n + 2;
+    for (int i = 1; i <= n; i++)
+    {
+        insertedge(nsource, i, fin[i]);
+        insertedge(i, nsource, 0);
+        insertedge(i, ntarget, fout[i]);
+        insertedge(ntarget, i, 0);
+    }
+    insertedge(source, target, maxint);
+    insertedge(target, source, 0);
+    insertedge(target, source, maxint);
+    insertedge(source, target, 0);
+    while (findpath())
+        dicnic(nsource);
+    system("Pause");
+    return 0;
+}

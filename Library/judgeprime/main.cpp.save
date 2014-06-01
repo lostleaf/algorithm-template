@@ -1,0 +1,33 @@
+#include <iostream>
+#include <ctime>
+#include <cstdlib>;
+using namespace std;
+int main()
+{
+    int x;
+    cin >> x;
+    srand(time(NULL));
+    for (int i = 1; i <= limit; i++)
+    {   
+        int mult, tmp;
+        int mod;
+        int j;
+        mod = rand() % (n - 2) + 2;
+        mult = 1;
+        tmp = x % mod;
+        j = mod - 1;
+        while (j)
+        {
+            if (j % 2)
+            { 
+                mult *= tmp;
+                mult %= mod;
+            }
+            tmp *= tmp;
+            tmp %= mod;
+            j = j >> 1;
+        }
+    }
+    system("Pause");
+    return 0;
+}

@@ -1,0 +1,141 @@
+#include <iostream>
+#include <cstring>
+#include <limits>
+#define maxint numeric_limits<int>::max()
+#define maxmemset 0x7f7f7f7f
+using namespace std;
+struct edge
+{
+    int x;
+    int c;
+    int v;
+    int next;
+};
+edge map[10000];
+int mat[1000], dis[1000];
+int queue[1000];
+int list[1000];
+bool belong[1000];
+int prev[1000];
+int review;
+int l, r;
+int mincost;
+int n, m;
+int source, target;
+int tot;
+void insertedge(int x, int y, int c, int v)
+{
+    tot++;
+    map[tot].x = y;
+    map[tot].c = c;
+    map[tot].v = v;
+    map[tot].next = list[x];
+    list[x] = tot;
+}
+bool findpath()
+{
+    memset(belong, true, sizeof(belong));
+    memset(mat, 0, sizeof(mat));
+    memset(dis, 0x7f, sizeof(dis));
+    mat[source] = 1;
+    dis[source] = 0;
+    l = 1;
+    r = 1;
+    queue[l] = source;
+    belong[source] = false;
+    mat[0] = maxint;
+    review = 0;
+    while (l <= r)
+    {
+        int i = list[queue[l]];
+        while (i)
+        {
+            if ((map[i].c) && (dis[map[i].x] > dis[queue[l]] + map[i].v))
+            {
+                dis[map[i].x] = dis[queue[l]] + map[i].v;
+                mat[map[i].x] = mat[queue[l]] + map[i].v;
+                if (belong[map[i].x])
+                {
+                    r++;
+                    queue[r] = map[i].x;
+                    belong[map[i].x] = false;
+                }
+            }
+            i = map[i].next;
+        }
+        belong[queue[l]] = true;
+        l++;
+    }
+    if (dis[target] != maxmemset)
+        return true;
+    else
+        return false;
+}
+void update()
+{
+    int i = target;
+    int min = maxint;
+    while (i != source)
+    {
+        if (map[prev[i]].c < min)
+            min = map[prev[i]].c;
+        i = map[prev[i] ^ 1].x;
+    }
+    mincost += min * dis[target];
+    i = target;
+    while (i != source)
+    {
+        map[prev[i]].c -= min;
+        map[prev[i] ^ 1].c += min;
+        if (!map[prev[i]].c)
+            review = map[prev[i] ^ 1].x;
+        i = map[prev[i] ^ 1].x;
+    }
+}
+void dicnic(int x)
+{
+    if (x == target)
+    {
+        update();
+        return ;
+    }
+    int i = list[x];
+    while (i)
+    {
+        if ((map[i].c) && (belong[map[i].x]) && (dis[map[i].x] = dis[x] + map[i].v))
+        {
+            prev[map[i].x] = i;
+            belong[map[i].x] = false;
+            dicnic(map[i].x);
+            belong[map[i].x] = true;
+            if (mat[x] > mat[review])
+                return ;
+            review = 0;
+        }
+        i = map[i].next;
+    }
+    mat[x] = 0;
+}
+int main()
+{
+    cin >> n >> m;
+    cin >> source >> target;
+    tot = 1;
+    for (int i = 1; i <= n; i++)
+    {
+        int x, y, c, v;
+        cin >> x >> y >> c >> v;
+        insertedge(x, y, c, v);
+        insertedge(y, x ,0, -v);
+    }
+    mincost = 0;
+    while (findpath())
+    {
+        memset(belong, true, sizeof(belong));
+        belong[source] = false;
+        dicnic(source);
+    }
+    cout << mincost;
+    system("Pause");
+    return 0;
+}

@@ -1,0 +1,72 @@
+#include <iostream>
+using namespace std;
+struct edge
+{
+    int x;
+    int c;
+    int next;
+};
+int n, m;
+edge map[100000];
+int dis[1000];
+int list[1000];
+int queue[1000];
+bool visit[1000];
+int head, tail;
+int source;
+int total;
+void insertedge(int x, int y, int c)
+{
+    total++;
+    map[total].x = y;
+    map[total].c = c;
+    map[total].next = list[x];
+    list[x] = total;
+}
+int main()
+{
+    cin >> n >> m;
+    cin >> source;
+    total = 0;
+    for (int i = 1; i <= m; i++)
+    {
+        int x, y, c;
+        cin >> x >> y >> c;
+        insertedge(x, y, c);
+        insertedge(y, x, c);
+    }
+    for (int i = 1; i <= n; i++)
+    {
+        dis[i] = -1;
+        visit[i] = false;
+    }
+    dis[source] = 0;
+    head = 1;
+    tail = 1;
+    queue[head] = source;
+    visit[source] = true;
+    while (head <= tail)
+    {
+        int xx = list[queue[head]];
+        while (xx)
+        {
+            if ((dis[map[xx].x] == -1) || (dis[queue[head]] + map[xx].c < dis[map[xx].x]))
+            {
+                dis[map[xx].x] = dis[queue[head]] + map[xx].c;
+                if (!visit[map[xx].x])
+                {
+                    tail++;
+                    queue[tail] = map[xx].x;
+                    visit[map[xx].x] = true;
+                }
+            }
+            xx = map[xx].next;
+        }
+        visit[queue[head]] = false;
+        head++;
+    }
+    for (int i = 1; i <= n; i++)
+        cout << dis[i] << ' ';
+    system("Pause");
+    return 0;
+}

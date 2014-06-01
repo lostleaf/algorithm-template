@@ -1,0 +1,54 @@
+#include <iostream>
+#include <limits>
+#define maxint numeric_limits<int>::max()
+using namespace std;
+struct edge
+{
+    int x, y;
+    int c;
+};
+int n, m;
+int source;
+int dis[1000];
+edge map[10000];
+int main()
+{
+    cin >> n >> m;
+    cin >> source;
+    for (int i = 1; i <= m; i++)
+    {
+        int x, y, c;
+        cin >> x >> y >> c;
+        map[i].x = x;
+        map[i].y = y;
+        map[i].c = c;
+        map[i + m].x = y;
+        map[i + m].y = x;
+        map[i + m].c = c;
+    }
+    for (int i = 1; i <= n; i++)
+        dis[i] = maxint;
+    dis[source] = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        bool change = false;
+        for (int j = 1; j <= (m << 1); j++)
+            if (dis[map[j].y] > dis[map[j].x] + map[j].c)
+            {
+                change = true;
+                dis[map[j].y] = dis[map[j].x] + map[j].c;
+            }
+        if (!change)
+            break;
+        if ((i == n + 1) && (change))
+        {
+            cout << "Wrong!\n";
+            system("Pause");
+            return 0;
+        }
+    }
+    for (int i = 1; i <= n; i++)
+        cout << dis[i] << ' ';
+    system("Pause");
+    return 0;
+}

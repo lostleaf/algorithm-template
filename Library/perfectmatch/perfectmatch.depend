@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1273808084 source:c:\users\fourleavedclover\documents\library\perfectmatch\main.cpp
+	<iostream>
+	<cstring>
+	<limits>
+

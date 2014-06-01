@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1273727529 source:c:\users\fourleavedclover\documents\library\judgeprime\main.cpp
+	<iostream>
+	<ctime>
+	<cstdlib>
+

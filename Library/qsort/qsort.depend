@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1273728059 source:c:\users\fourleavedclover\documents\library\qsort\main.cpp
+	<iostream>
+	<ctime>
+	<cstdlib>
+

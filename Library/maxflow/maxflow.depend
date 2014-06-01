@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1273382042 source:c:\users\fourleavedclover\documents\library\maxflow\main.cpp
+	<iostream>
+	<cstring>
+	<limits>
+

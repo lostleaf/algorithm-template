@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1271059478 source:c:\users\fourleavedclover\documents\library\exdkmp\main.cpp
+	<iostream>
+	<string>
+	<cstring>
+

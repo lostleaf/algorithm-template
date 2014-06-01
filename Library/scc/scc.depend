@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1273671252 source:c:\users\fourleavedclover\documents\library\scc\main.cpp
+	<iostream>
+	<cstring>
+
