@@ -1,4 +1,4 @@
 algorithm-template
 ==================
 
-my algorithm template for NOI and ACM years.
+my algorithm template for ACM
